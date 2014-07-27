@@ -1,6 +1,4 @@
 Thumbs.db
-*.mdf
-*.ldf
 *.obj
 *.exe
 *.pdb
@@ -29,5 +27,3 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.vssscc
 $tf*/
-DB/GCS.mdf
-DB/GCS_log.ldf
