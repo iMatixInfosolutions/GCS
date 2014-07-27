@@ -31,5 +31,8 @@ namespace DE
         public DbSet<webpages_OAuthMembership> webpages_OAuthMembership { get; set; }
         public DbSet<webpages_Roles> webpages_Roles { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<AppEvent> AppEvents { get; set; }
+        public DbSet<Dictionary> Dictionaries { get; set; }
+        public DbSet<ZipCode> ZipCodes { get; set; }
     }
 }

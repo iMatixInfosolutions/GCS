@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppEvent.cs" />
+    <Compile Include="User.cs" />
     <Compile Include="Customer.cs" />
     <Compile Include="DbQueryResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

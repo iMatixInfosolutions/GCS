@@ -39,5 +39,6 @@ namespace DE
         public Nullable<int> rub { get; set; }
         public System.DateTime rct { get; set; }
         public Nullable<System.DateTime> rut { get; set; }
+        public Nullable<int> ZipCode { get; set; }
     }
 }

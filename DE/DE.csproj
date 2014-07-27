@@ -47,7 +47,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppEvent.cs">
+      <DependentUpon>GCSModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Customer.cs">
+      <DependentUpon>GCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dictionary.cs">
       <DependentUpon>GCSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="GCSModel.Context.cs">
@@ -79,6 +85,9 @@
       <DependentUpon>GCSModel.tt</DependentUpon>
     </Compile>
     <Compile Include="webpages_Roles.cs">
+      <DependentUpon>GCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ZipCode.cs">
       <DependentUpon>GCSModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

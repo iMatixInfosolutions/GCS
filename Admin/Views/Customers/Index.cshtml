@@ -166,20 +166,18 @@
                             <td></td>
                         </tr>
                         <tr>
-                            <td>City</td>
-                            <td>
-                                <select class="form-control">
-                                    <option value="Chicago">Chicago</option>
-                                </select>
-
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
                             <td>Zip Code</td>
                             <td>
                                 <input type="text" class="form-control input-sm" placeholder="Zip Code" name="ZipCode" data-bind="value: CustomerItem.Phone" />
 
+                            </td>
+                            <td></td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Place</td>
+                            <td> - 
                             </td>
                             <td></td>
                         </tr>
@@ -246,13 +244,8 @@
                         <tr>
                             <td>Verified By</td>
                             <td>
-                                <select class="form-control">
-                                    <option value="1">Giriraj</option>
-                                    <option value="2">Tarina</option>
-                                    <option value="3">Clarisa</option>
-                                    <option value="4">Isha</option>
+                                <select class="form-control input-sm" data-bind="options: lst_VerifiedBy, optionsText:'UserName', optionsValue:'UserId', value:CustomerItem.VerifiedBy, optionsCaption:'Select User...'">
                                 </select>
-
                             </td>
                             <td></td>
                         </tr>
@@ -323,6 +316,7 @@
             });
 
 
+            $('#Modal1').modal('show');
 
             //$('#DefaultForm').validate();
             /*
@@ -338,6 +332,11 @@
 
 
     <script type="text/javascript">
+        var InitData = {
+            'Users': @Html.Raw(Json.Encode(BE.User.GetUserForLookup()))
+        };
+        
+
         var model;
         var Knockout = function () {
             var CustomerModel = function (raw) {
@@ -352,6 +351,8 @@
                 this.CityId = ko.observable('');
                 this.EmailVerified = ko.observable('');
                 this.IP = ko.observable('');
+                this.VerifiedBy = ko.observable();
+                
 
                 this.Apply = function (raw) {
                     raw = ko.toJS(raw)
@@ -366,23 +367,33 @@
                     this.CityId(raw.CityId);
                     this.Email(raw.Email);
                     this.IP(raw.IP);
+                    this.VerifiedBy(raw.VerifiedBy);
                 }
                 if (raw) this.Apply(raw)
             }
+
+
             var ViewModel = function () {
                 var self = this;
+
+                this.lst_VerifiedBy = InitData.Users;
+
                 this.CustomerItem = new CustomerModel();
 
                 this.AddNew = function () {
                     self.CustomerItem.Apply({});
                     $('#Modal1').modal('show');
                 }
+
+
                 this.Save = function () {
 
                     //console.log($("#DefaultForm").validate());
                     //if (!$("#DefaultForm").valid()) return false;
 
+                    
                     var d = JSON.stringify(ko.toJS(self.CustomerItem), null, 2)
+                    
                     $.ajax({
                         type: 'POST',
                         contentType: 'application/json;',
@@ -419,9 +430,12 @@
                 load: load
             }
         }
+
+
         $(document).ready(function () {
             var koObject = new Knockout();
             koObject.load();
+            console.log(model);
         });
     </script>
 

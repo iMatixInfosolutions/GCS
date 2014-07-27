@@ -6,13 +6,20 @@
     <edmx:StorageModels>
     <Schema Namespace="GCSModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="GCSModelStoreContainer">
+          <EntitySet Name="AppEvent" EntityType="GCSModel.Store.AppEvent" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Customer" EntityType="GCSModel.Store.Customer" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Dictionary" EntityType="GCSModel.Store.Dictionary" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="sysdiagrams" EntityType="GCSModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserProfile" EntityType="GCSModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="webpages_Membership" EntityType="GCSModel.Store.webpages_Membership" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="webpages_OAuthMembership" EntityType="GCSModel.Store.webpages_OAuthMembership" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="webpages_Roles" EntityType="GCSModel.Store.webpages_Roles" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="webpages_UsersInRoles" EntityType="GCSModel.Store.webpages_UsersInRoles" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="ZipCode" EntityType="GCSModel.Store.ZipCode" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Dictionary_Dictionary" Association="GCSModel.Store.FK_Dictionary_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionary" />
+            <End Role="Dictionary1" EntitySet="Dictionary" />
+          </AssociationSet>
           <AssociationSet Name="fk_RoleId" Association="GCSModel.Store.fk_RoleId">
             <End Role="webpages_Roles" EntitySet="webpages_Roles" />
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
@@ -22,6 +29,19 @@
             <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="AppEvent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AppName" Type="nchar" MaxLength="20" />
+          <Property Name="EventType" Type="nchar" MaxLength="50" />
+          <Property Name="EventDescription" Type="nchar" MaxLength="300" />
+          <Property Name="Query" Type="nchar" MaxLength="600" />
+          <Property Name="Status" Type="nchar" MaxLength="20" />
+          <Property Name="rct" Type="smalldatetime" />
+          <Property Name="rut" Type="smalldatetime" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Id" />
@@ -35,6 +55,7 @@
           <Property Name="Address1" Type="nchar" MaxLength="200" />
           <Property Name="Street" Type="nchar" MaxLength="200" />
           <Property Name="CityId" Type="int" />
+          <Property Name="ZipCode" Type="int" />
           <Property Name="EmailVerified" Type="bit" />
           <Property Name="IsVerifiedAsBuyer" Type="bit" />
           <Property Name="IP" Type="nchar" MaxLength="20" />
@@ -51,6 +72,19 @@
           <Property Name="rub" Type="int" />
           <Property Name="rcd" Type="smalldatetime" Nullable="false" />
           <Property Name="rud" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Label" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Value" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="RCB" Type="int" />
+          <Property Name="RUB" Type="int" />
+          <Property Name="RCT" Type="smalldatetime" />
+          <Property Name="RUT" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -110,6 +144,36 @@
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="RoleId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="ZipCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CountryCode" Type="varchar" MaxLength="2" />
+          <Property Name="ZipCode" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="PlaceName" Type="varchar" MaxLength="180" />
+          <Property Name="State" Type="varchar" MaxLength="100" />
+          <Property Name="StateCode" Type="varchar" MaxLength="20" />
+          <Property Name="CountyProvince" Type="varchar" MaxLength="100" />
+          <Property Name="CountyProvinceCode" Type="varchar" MaxLength="20" />
+          <Property Name="Community" Type="varchar" MaxLength="100" />
+          <Property Name="CommunityCode" Type="varchar" MaxLength="20" />
+          <Property Name="latitude" Type="decimal" Precision="8" Scale="4" />
+          <Property Name="longitude" Type="decimal" Precision="8" Scale="4" />
+          <Property Name="accuracy" Type="int" />
+        </EntityType>
+        <Association Name="FK_Dictionary_Dictionary">
+          <End Role="Dictionary" Type="GCSModel.Store.Dictionary" Multiplicity="0..1" />
+          <End Role="Dictionary1" Type="GCSModel.Store.Dictionary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dictionary1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="fk_RoleId">
           <End Role="webpages_Roles" Type="GCSModel.Store.webpages_Roles" Multiplicity="1" />
           <End Role="webpages_UsersInRoles" Type="GCSModel.Store.webpages_UsersInRoles" Multiplicity="*" />
@@ -149,6 +213,13 @@
             <End Role="UserProfile" EntitySet="UserProfiles" />
           </AssociationSet>
           <EntitySet Name="Customers" EntityType="GCSModel.Customer" />
+          <EntitySet Name="AppEvents" EntityType="GCSModel.AppEvent" />
+          <EntitySet Name="Dictionaries" EntityType="GCSModel.Dictionary" />
+          <EntitySet Name="ZipCodes" EntityType="GCSModel.ZipCode" />
+          <AssociationSet Name="FK_Dictionary_Dictionary" Association="GCSModel.FK_Dictionary_Dictionary">
+            <End Role="Dictionary" EntitySet="Dictionaries" />
+            <End Role="Dictionary1" EntitySet="Dictionaries" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="sysdiagram">
           <Key>
@@ -235,7 +306,66 @@
           <Property Type="Int32" Name="rub" />
           <Property Type="DateTime" Name="rct" Nullable="false" Precision="0" />
           <Property Type="DateTime" Name="rut" Precision="0" />
+          <Property Type="Int32" Name="ZipCode" />
         </EntityType>
+        <EntityType Name="AppEvent">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="String" Name="AppName" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="EventType" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="EventDescription" MaxLength="300" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="Query" MaxLength="600" FixedLength="true" Unicode="true" />
+          <Property Type="String" Name="Status" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Type="DateTime" Name="rct" Precision="0" />
+          <Property Type="DateTime" Name="rut" Precision="0" />
+        </EntityType>
+        <EntityType Name="Dictionary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Label" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Value" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="Int32" Name="ParentId" />
+          <Property Type="Int32" Name="RCB" />
+          <Property Type="Int32" Name="RUB" />
+          <Property Type="DateTime" Name="RCT" Precision="0" />
+          <Property Type="DateTime" Name="RUT" Precision="0" />
+          <NavigationProperty Name="Dictionary1" Relationship="GCSModel.FK_Dictionary_Dictionary" FromRole="Dictionary" ToRole="Dictionary1" />
+          <NavigationProperty Name="Dictionary2" Relationship="GCSModel.FK_Dictionary_Dictionary" FromRole="Dictionary1" ToRole="Dictionary" />
+        </EntityType>
+        <EntityType Name="ZipCode">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="CountryCode" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ZipCode1" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="PlaceName" MaxLength="180" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="State" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="StateCode" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CountyProvince" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CountyProvinceCode" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Community" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="CommunityCode" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Type="Decimal" Name="latitude" Precision="8" Scale="4" />
+          <Property Type="Decimal" Name="longitude" Precision="8" Scale="4" />
+          <Property Type="Int32" Name="accuracy" />
+        </EntityType>
+        <Association Name="FK_Dictionary_Dictionary">
+          <End Type="GCSModel.Dictionary" Role="Dictionary" Multiplicity="0..1" />
+          <End Type="GCSModel.Dictionary" Role="Dictionary1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dictionary">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Dictionary1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -307,6 +437,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="IsTypeOf(GCSModel.Customer)">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -332,6 +463,53 @@
                 <ScalarProperty Name="rub" ColumnName="rub" />
                 <ScalarProperty Name="rct" ColumnName="rcd" />
                 <ScalarProperty Name="rut" ColumnName="rud" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AppEvents">
+            <EntityTypeMapping TypeName="GCSModel.AppEvent">
+              <MappingFragment StoreEntitySet="AppEvent">
+                <ScalarProperty Name="rut" ColumnName="rut" />
+                <ScalarProperty Name="rct" ColumnName="rct" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Query" ColumnName="Query" />
+                <ScalarProperty Name="EventDescription" ColumnName="EventDescription" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="AppName" ColumnName="AppName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dictionaries">
+            <EntityTypeMapping TypeName="GCSModel.Dictionary">
+              <MappingFragment StoreEntitySet="Dictionary">
+                <ScalarProperty Name="RUT" ColumnName="RUT" />
+                <ScalarProperty Name="RCT" ColumnName="RCT" />
+                <ScalarProperty Name="RUB" ColumnName="RUB" />
+                <ScalarProperty Name="RCB" ColumnName="RCB" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Label" ColumnName="Label" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ZipCodes">
+            <EntityTypeMapping TypeName="GCSModel.ZipCode">
+              <MappingFragment StoreEntitySet="ZipCode">
+                <ScalarProperty Name="accuracy" ColumnName="accuracy" />
+                <ScalarProperty Name="longitude" ColumnName="longitude" />
+                <ScalarProperty Name="latitude" ColumnName="latitude" />
+                <ScalarProperty Name="CommunityCode" ColumnName="CommunityCode" />
+                <ScalarProperty Name="Community" ColumnName="Community" />
+                <ScalarProperty Name="CountyProvinceCode" ColumnName="CountyProvinceCode" />
+                <ScalarProperty Name="CountyProvince" ColumnName="CountyProvince" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="PlaceName" ColumnName="PlaceName" />
+                <ScalarProperty Name="ZipCode1" ColumnName="ZipCode" />
+                <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
