@@ -1,0 +1,134 @@
+﻿@model Admin.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+    Layout = null;
+}
+
+        
+        <link href="~/Content/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="~/Content/assets/css/style-metro.css" rel="stylesheet" type="text/css"/>
+        <link href="~/Content/assets/css/style.css" rel="stylesheet" type="text/css"/>
+
+<script type="text/javascript">
+
+  
+
+</script>
+<style type="text/css">
+
+    
+body {
+    background:#2e363f;
+    font-family:Open Sans, Arial;
+}
+
+    input[type=text], input[type=password] {
+     border:0px;
+     padding:11px;
+     display:block;
+     width:300px;
+    }
+footer {
+        background:#1f262d;
+        height:25px;
+        line-height:25px;
+        padding:0px 10px 0px 10px;
+        color:#999999;
+        font-size:11px;
+        position:fixed;
+        bottom:0px;
+        width:100%;
+    }
+footer img {
+            margin-top:5px;
+        margin-right:20px;
+        }
+.sec-login-frm {
+       border:0px solid red;
+       width:390px;
+       margin:0 auto;margin-top:10%;
+       
+    }
+
+
+    hr{
+       background:url(/Images/Login-Divider.png) top center;
+	height:2px;
+	border:none !important;
+        
+    }
+
+    .errormsg {
+        color:red; font-size:11px;
+    }
+   
+
+</style>
+
+<section class="sec-login-frm">
+    
+
+    <img src="~/Images/Login-Big-Logo.png" style="margin-left:72px;"/>
+    <hr />
+    <br />
+    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+   <div style="margin-left:24px;">
+     <img src="~/Images/Username-Img.png" style="float:left"/>
+       @* @Html.LabelFor(m => m.UserName)*@
+        @Html.TextBoxFor(m => m.UserName, new {@placeholder="Username"})
+        <span class="errormsg">@Html.ValidationMessageFor(m => m.UserName)</span>
+       @*<input type="text" placeholder="Username"/>       *@<br /><br />
+        <img src="~/Images/Password-Img.png" style="float:left"/>
+        @*@Html.LabelFor(m => m.Password)*@
+        @Html.PasswordFor(m => m.Password, new {@placeholder="Password", Style="margin-top:0px;"})
+        <span class="errormsg">@Html.ValidationMessageFor(m => m.Password)</span>
+       </div>
+    <hr />
+
+    
+    <input type="button" value="Forgot Password?" class="btn skyBlue"/>
+    <input type="submit" value="Login" class="btn green pull-right" />
+        }
+</section>
+<footer>
+    2013 © Teckrfat. All Rights Reserved.
+    <img src="~/Images/Login-Footer-Logo.png" class="pull-right">
+</footer>
+
+
+
+@* 
+<section id="loginForm">
+
+
+
+   <fieldset>
+        <legend>Log in Form</legend>
+        <ol>
+            <li>
+               
+            </li>
+            <li>
+                
+            </li>
+            <li>
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+            </li>
+        </ol>
+        
+    </fieldset>
+    <p>
+        @Html.ActionLink("Register", "Register") if you don't have an account.
+    </p>
+
+</section>
+
+<section class="social" id="socialLoginForm">
+    <h2>Use another service to log in.</h2>
+    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+</section>
+*@
