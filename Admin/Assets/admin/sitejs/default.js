@@ -18,10 +18,11 @@ $(window).resize(ajustamodal);
 
 /*BEGIN: Make modal height fit window and make it scrollable*/
 function ajustamodal() {
-    var altura = $(window).height() - 170; //value corresponding to the modal heading + footer
+    var altura = $(window).height() - 200; //value corresponding to the modal heading + footer
     $(".ativa-scroll").css({ "height": altura, "overflow-y": "auto" });
 }
 /*END: Make modal height fit window and make it scrollable*/
+
 
 
 /*BEGIN: Fill Test values in the form. Takes random number and append it to form field name.*/
@@ -31,7 +32,7 @@ var fillTestValues = function (context) {
     $('#' + context + ' input').val(function () {
         return this.name + " " + rnd;
     });
-}
+} 
 /*BEGIN: Fill Test values in the form. Takes random number and append it to form field name.*/
 
 
