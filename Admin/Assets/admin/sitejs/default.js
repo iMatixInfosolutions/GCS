@@ -1,8 +1,22 @@
-﻿
+﻿/*BEGIN: Default document.ready */
+$(document).ready(function () {
+    Metronic.init(); // init metronic core components
+    Layout.init(); // init current layout
+    QuickSidebar.init() // init quick sidebar
+
+    //Set Active Link in Navbar
+    $("a[href='/" + location.href.split('/')[location.href.split('/').length - 1] + "']").parent().addClass('active');
+    ajustamodal();
+});
+
+$(window).resize(ajustamodal);
+
+/*END: Default document.ready */
+
+
+
 
 /*BEGIN: Make modal height fit window and make it scrollable*/
-$(document).ready(ajustamodal);
-$(window).resize(ajustamodal);
 function ajustamodal() {
     var altura = $(window).height() - 170; //value corresponding to the modal heading + footer
     $(".ativa-scroll").css({ "height": altura, "overflow-y": "auto" });
